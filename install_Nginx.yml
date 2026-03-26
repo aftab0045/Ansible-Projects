@@ -12,7 +12,13 @@
       ansible.builtin.systemd_service:
         name : nginx
         state : stopped
-        enabled : true
+        enabled : false
+
+    - name : Install Appache
+      ansible.builtin.dnf:
+        name : httpd
+        state : present
+
 
     - name : start Apache and enables
       ansible.builtin.systemd_service:
@@ -22,6 +28,6 @@
 
     - name : host simple html page on nginx
       ansible.builtin.copy:
-        dest: /usr/share/nginx/html/index.html
+        dest: /var/www/html/index.html
         content: '<h1> This is HTML page from ANSIBLE </h1>'
         
