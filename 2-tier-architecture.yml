@@ -37,7 +37,6 @@
             echo "Hello World from App Server";
           ?>
 
-
 # Define DB server
 - name : Install db server
   hosts : dbserver
