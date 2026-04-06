@@ -1,0 +1,67 @@
+# Deplyoment of a 2-tier architecture application using Ansible single script
+---
+# Define App server
+- name : Install App server
+  hosts : appserver
+  become : true
+  vars : 
+    pkg :
+      - nginx
+      - php
+      - php-fpm
+    svc : 
+      - nginx
+      - php-fpm
+    web_file_path : /usr/share/nginx/html/index.php
+  tasks :
+  # Install nginx
+    - name : Install nginx , php-fpm  
+      ansible.builtin.dnf:
+        name : "{{pkg}}"
+        state : present
+  
+  # Start and enabled
+    - name : Start and enable services
+      ansible.builtin.systemd_service:
+        name : "{{item}}"
+        state : started
+        enabled : true
+      loop : "{{svc}}"  
+
+  # Deployment Of PHP
+    - name : Deplyoment
+      ansible.builtin.copy:
+        dest : "{{web_file_path}}"
+        content : |
+          <?php
+            echo "Hello World from App Server";
+          ?>
+
+
+# Define DB server
+- name : Install db server
+  hosts : dbserver
+  become : true
+  vars : 
+    db_pkg : mariadb105-server
+    db_svc : mariadb
+    db_name : DATABASE
+  tasks : 
+    # Install mariadb
+    - name : Install mariadb
+      ansible.builtin.dnf:
+        name : "{{db_pkg}}"
+        state : present
+
+    # Start and enable services
+    - name :  Start and enable services
+      ansible.builtin.systemd_service:
+        name : "{{db_svc}}"
+        state : started
+        enabled : true
+
+    # Create a database
+    - name : cretae a sample database
+      ansible.builtin.shell: |
+        mysql -u root -e "CREATE DATABASE IF NOT EXISTS {{db_name}};"
+            
