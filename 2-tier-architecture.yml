@@ -45,7 +45,7 @@
   vars : 
     db_pkg : mariadb105-server
     db_svc : mariadb
-    db_name : DATABASE
+    db_name : SampleDB
   tasks : 
     # Install mariadb
     - name : Install mariadb
