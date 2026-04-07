@@ -23,7 +23,7 @@
       create: yes
       block: |
         server {
-           listen 82;
+           listen 81;
            root /usr/share/nginx/html/;
            index  index.html;
         }
