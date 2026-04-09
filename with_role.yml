@@ -22,5 +22,7 @@
   # ansible.builtin.copy:
   #   src : files/index.html
   #   dest : "{{file_path}}"
+
+  
   roles :
     - httpd
